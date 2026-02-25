@@ -22,7 +22,13 @@ let package = Package(
         .target(
             name: "System Primitives",
             dependencies: []
-        )
+        ),
+        .testTarget(
+            name: "System Primitives Tests",
+            dependencies: [
+                "System Primitives",
+            ]
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
@@ -33,6 +39,7 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
+        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
         .enableExperimentalFeature("Lifetimes"),
         .enableExperimentalFeature("SuppressedAssociatedTypes"),
         .enableExperimentalFeature("SuppressedAssociatedTypesWithDefaults"),
