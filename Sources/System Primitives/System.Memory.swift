@@ -30,7 +30,7 @@ extension System.Memory {
     /// ## Usage
     ///
     /// ```swift
-    /// let totalRAM = System.memory.capacity
+    /// let totalRAM = System.Memory.total
     /// let totalGB = UInt64(totalRAM) / (1024 * 1024 * 1024)
     /// ```
     public typealias Capacity = Tagged<System.Memory, Cardinal>

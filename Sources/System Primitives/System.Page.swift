@@ -37,7 +37,7 @@ extension System.Page {
     /// ## Usage
     ///
     /// ```swift
-    /// let pageSize = System.page.size
+    /// let pageSize = System.Page.size
     /// let alignment = pageSize.alignment  // Memory.Alignment
     /// ```
     public typealias Size = Tagged<System.Page, Cardinal>

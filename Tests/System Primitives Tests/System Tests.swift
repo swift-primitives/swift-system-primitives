@@ -15,12 +15,6 @@ import Testing
 @Suite("System")
 struct SystemTests {
 
-    @Test("processorCount returns positive value")
-    func processorCountReturnsPositiveValue() {
-        let count = System.processorCount
-        #expect(count >= 1)
-    }
-
     @Test("Topology types are constructible")
     func topologyTypesAreConstructible() {
         let node = System.Topology.NUMA.Node(
@@ -55,14 +49,21 @@ struct SystemTests {
         #expect(nonUniform == .nonUniform(nodes: []))
     }
 
+    @Test("Processor.count returns positive value")
+    func processorCountReturnsPositiveValue() {
+        let count = System.Processor.count
+        #expect(count >= .one)
+    }
+
     @Test("Synthetic node creation")
     func syntheticNodeCreation() {
+        let cpuCount = Int(System.Processor.count)
         let syntheticNode = System.Topology.NUMA.Node(
             id: 0,
-            cpus: Set(0..<System.processorCount),
+            cpus: Set(0..<cpuCount),
             isSynthetic: true
         )
         #expect(syntheticNode.isSynthetic == true)
-        #expect(syntheticNode.cpus.count == System.processorCount)
+        #expect(syntheticNode.cpus.count == cpuCount)
     }
 }
