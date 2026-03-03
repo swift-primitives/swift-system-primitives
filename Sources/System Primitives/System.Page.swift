@@ -50,3 +50,48 @@ extension Int {
         self = Int(bitPattern: size)
     }
 }
+
+// MARK: - Accessor
+
+#if !hasFeature(Embedded)
+#if canImport(Darwin)
+public import Darwin
+#elseif canImport(Glibc)
+public import Glibc
+#elseif canImport(Musl)
+public import Musl
+#elseif os(Windows)
+@preconcurrency public import WinSDK
+#endif
+#endif
+
+extension System.Page {
+    /// The system's memory page size in bytes.
+    ///
+    /// ## Platform Implementation
+    /// - POSIX: `sysconf(_SC_PAGESIZE)`
+    /// - Windows: `GetSystemInfo().dwPageSize`
+    ///
+    /// ## Typical Values
+    /// - x86-64: 4096 bytes
+    /// - Apple Silicon: 16384 bytes
+    @inlinable
+    public static var size: Size {
+        #if hasFeature(Embedded)
+        Size(__unchecked: (), Cardinal(UInt(4096)))
+        #elseif os(Windows)
+        _windowsPageSize
+        #else
+        Size(__unchecked: (), Cardinal(UInt(sysconf(Int32(_SC_PAGESIZE)))))
+        #endif
+    }
+}
+
+#if !hasFeature(Embedded)
+#if os(Windows)
+@usableFromInline
+internal var _windowsPageSize: System.Page.Size {
+    System.Page.Size(__unchecked: (), Cardinal(UInt(_cachedSystemInfo.dwPageSize)))
+}
+#endif
+#endif
