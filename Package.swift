@@ -17,11 +17,15 @@ let package = Package(
             targets: ["System Primitives"]
         )
     ],
-    dependencies: [],
+    dependencies: [
+        .package(path: "../swift-cardinal-primitives"),
+    ],
     targets: [
         .target(
             name: "System Primitives",
-            dependencies: []
+            dependencies: [
+                .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
+            ]
         ),
         .testTarget(
             name: "System Primitives Tests",

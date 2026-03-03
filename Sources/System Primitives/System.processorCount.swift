@@ -36,6 +36,7 @@ extension System {
     /// let cpuCount = System.processorCount
     /// let workers = min(cpuCount, 8)
     /// ```
+    @available(*, deprecated, message: "Use System.processor.count (typed) instead")
     @inlinable
     public static var processorCount: Int {
         #if hasFeature(Embedded)
