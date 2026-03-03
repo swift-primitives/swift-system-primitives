@@ -20,14 +20,3 @@
 /// - Set affinity (see Kernel.Thread.affinity)
 /// - Manage synchronization (see Kernel.Lock, Kernel.Thread.Mutex)
 public enum System {}
-
-extension System {
-    /// Nested accessor for processor-related properties.
-    public static var processor: Processor.Type { Processor.self }
-
-    /// Nested accessor for memory-related properties.
-    public static var memory: Memory.Type { Memory.self }
-
-    /// Nested accessor for page-related properties.
-    public static var page: Page.Type { Page.self }
-}
