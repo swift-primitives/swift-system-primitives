@@ -43,14 +43,6 @@ extension System.Page {
     public typealias Size = Tagged<System.Page, Cardinal>
 }
 
-extension Int {
-    /// Creates an Int from a page size.
-    @inlinable
-    public init(_ size: System.Page.Size) {
-        self = Int(bitPattern: size)
-    }
-}
-
 // MARK: - Accessor
 
 #if !hasFeature(Embedded)
@@ -95,3 +87,12 @@ internal var _windowsPageSize: System.Page.Size {
 }
 #endif
 #endif
+
+extension Int {
+    /// Creates an Int from a page size.
+    @inlinable
+    public init(_ size: System.Page.Size) {
+        self = Int(bitPattern: size)
+    }
+}
+
