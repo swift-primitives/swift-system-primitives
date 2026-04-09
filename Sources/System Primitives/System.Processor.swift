@@ -37,6 +37,20 @@ extension System.Processor {
     /// let threads = Kernel.Thread.Count(cpuCount)
     /// ```
     public typealias Count = Tagged<System.Processor, Cardinal>
+
+    /// Identifies a specific logical processor.
+    ///
+    /// Ordinal complement to ``Count``: Count answers "how many processors",
+    /// ID answers "which processor". Used for CPU affinity, pinning threads
+    /// or poll loops to a specific core.
+    ///
+    /// ## Usage
+    ///
+    /// ```swift
+    /// let cpu: System.Processor.ID = 0
+    /// var thread = Kernel.IO.Uring.Params.Submission.Thread(cpu: cpu)
+    /// ```
+    public typealias ID = Tagged<System.Processor, Ordinal>
 }
 
 // MARK: - Accessor
