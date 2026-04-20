@@ -15,8 +15,8 @@ import Testing
 @Suite("System")
 struct SystemTests {
 
-    @Test("Topology types are constructible")
-    func topologyTypesAreConstructible() {
+    @Test
+    func `Topology types are constructible`() {
         let node = System.Topology.NUMA.Node(
             id: 0,
             cpus: [0, 1, 2, 3],
@@ -38,8 +38,8 @@ struct SystemTests {
         }
     }
 
-    @Test("NUMA State cases")
-    func numaStateCases() {
+    @Test
+    func `NUMA State cases`() {
         let unavailable = System.Topology.NUMA.State.unavailable
         let uniform = System.Topology.NUMA.State.uniformAccess
         let nonUniform = System.Topology.NUMA.State.nonUniform(nodes: [])
@@ -49,14 +49,14 @@ struct SystemTests {
         #expect(nonUniform == .nonUniform(nodes: []))
     }
 
-    @Test("Processor.count returns positive value")
-    func processorCountReturnsPositiveValue() {
+    @Test
+    func `Processor.count returns positive value`() {
         let count = System.Processor.count
         #expect(count >= .one)
     }
 
-    @Test("Synthetic node creation")
-    func syntheticNodeCreation() {
+    @Test
+    func `Synthetic node creation`() {
         let cpuCount = Int(System.Processor.count)
         let syntheticNode = System.Topology.NUMA.Node(
             id: 0,
