@@ -23,8 +23,10 @@ extension System {
     ///
     /// ## Platform Implementation
     ///
-    /// - POSIX: `sysconf(_SC_PAGESIZE)`
-    /// - Windows: `GetSystemInfo().dwPageSize`
+    /// The runtime page-size accessor lives in the platform stack:
+    /// - POSIX: `swift-iso-9945` (`ISO_9945.Kernel.System.pageSize`)
+    /// - Windows: `swift-windows-standard` (`Windows.Kernel.System.pageSize`)
+    /// - Cross-platform: `swift-kernel` (`Kernel.System.pageSize`)
     public enum Page {}
 }
 
@@ -37,56 +39,11 @@ extension System.Page {
     /// ## Usage
     ///
     /// ```swift
-    /// let pageSize = System.Page.size
-    /// let alignment = pageSize.alignment  // Memory.Alignment
+    /// let pageSize = Kernel.System.pageSize  // from swift-kernel (L3)
+    /// let alignment = pageSize.alignment     // Memory.Alignment
     /// ```
     public typealias Size = Tagged<System.Page, Cardinal>
 }
-
-// MARK: - Accessor
-
-#if !hasFeature(Embedded)
-#if canImport(Darwin)
-public import Darwin
-#elseif canImport(Glibc)
-public import Glibc
-#elseif canImport(Musl)
-public import Musl
-#elseif os(Windows)
-@preconcurrency public import WinSDK
-#endif
-#endif
-
-extension System.Page {
-    /// The system's memory page size in bytes.
-    ///
-    /// ## Platform Implementation
-    /// - POSIX: `sysconf(_SC_PAGESIZE)`
-    /// - Windows: `GetSystemInfo().dwPageSize`
-    ///
-    /// ## Typical Values
-    /// - x86-64: 4096 bytes
-    /// - Apple Silicon: 16384 bytes
-    @inlinable
-    public static var size: Size {
-        #if hasFeature(Embedded)
-        Size(__unchecked: (), Cardinal(UInt(4096)))
-        #elseif os(Windows)
-        _windowsPageSize
-        #else
-        Size(__unchecked: (), Cardinal(UInt(sysconf(Int32(_SC_PAGESIZE)))))
-        #endif
-    }
-}
-
-#if !hasFeature(Embedded)
-#if os(Windows)
-@usableFromInline
-internal var _windowsPageSize: System.Page.Size {
-    System.Page.Size(__unchecked: (), Cardinal(UInt(_cachedSystemInfo.dwPageSize)))
-}
-#endif
-#endif
 
 extension Int {
     /// Creates an Int from a page size.
@@ -95,4 +52,3 @@ extension Int {
         self = Int(bitPattern: size)
     }
 }
-

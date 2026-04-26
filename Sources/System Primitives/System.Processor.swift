@@ -18,9 +18,10 @@ extension System {
     ///
     /// ## Platform Implementation
     ///
-    /// - POSIX: `sysconf(_SC_NPROCESSORS_ONLN)`
-    /// - Windows: `GetSystemInfo().dwNumberOfProcessors`
-    /// - Darwin: `sysctl("hw.physicalcpu")` for physical count
+    /// The runtime processor-count accessor lives in the platform stack:
+    /// - POSIX: `swift-iso-9945` (`ISO_9945.Kernel.System.processorCount`)
+    /// - Windows: `swift-windows-standard` (`Windows.Kernel.System.processorCount`)
+    /// - Cross-platform: `swift-kernel` (`Kernel.System.Processor.count`)
     public enum Processor {}
 }
 
@@ -33,7 +34,7 @@ extension System.Processor {
     /// ## Usage
     ///
     /// ```swift
-    /// let cpuCount = System.Processor.count
+    /// let cpuCount = Kernel.System.Processor.count  // from swift-kernel (L3)
     /// let threads = Kernel.Thread.Count(cpuCount)
     /// ```
     public typealias Count = Tagged<System.Processor, Cardinal>
@@ -52,57 +53,6 @@ extension System.Processor {
     /// ```
     public typealias ID = Tagged<System.Processor, Ordinal>
 }
-
-// MARK: - Accessor
-
-#if !hasFeature(Embedded)
-#if canImport(Darwin)
-public import Darwin
-#elseif canImport(Glibc)
-public import Glibc
-#elseif canImport(Musl)
-public import Musl
-#elseif os(Windows)
-@preconcurrency public import WinSDK
-#endif
-#endif
-
-extension System.Processor {
-    /// Number of active/online logical processors (hardware threads).
-    ///
-    /// ## Platform Implementation
-    /// - POSIX: `sysconf(_SC_NPROCESSORS_ONLN)`
-    /// - Windows: `GetSystemInfo().dwNumberOfProcessors`
-    ///
-    /// ## Fallback
-    /// Returns 1 if the syscall fails or returns invalid data.
-    @inlinable
-    public static var count: Count {
-        #if hasFeature(Embedded)
-        Count(__unchecked: (), Cardinal(UInt(1)))
-        #elseif os(Windows)
-        _windowsProcessorCount
-        #else
-        let result = sysconf(Int32(_SC_NPROCESSORS_ONLN))
-        return Count(__unchecked: (), Cardinal(UInt(result > 0 ? result : 1)))
-        #endif
-    }
-}
-
-#if !hasFeature(Embedded)
-#if os(Windows)
-private nonisolated(unsafe) let _cachedSystemInfo: SYSTEM_INFO = {
-    var info = SYSTEM_INFO()
-    GetSystemInfo(&info)
-    return info
-}()
-
-@usableFromInline
-internal var _windowsProcessorCount: System.Processor.Count {
-    System.Processor.Count(__unchecked: (), Cardinal(UInt(_cachedSystemInfo.dwNumberOfProcessors)))
-}
-#endif
-#endif
 
 extension Int {
     /// Creates an Int from a processor count.
