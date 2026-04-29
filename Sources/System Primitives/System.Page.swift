@@ -24,9 +24,9 @@ extension System {
     /// ## Platform Implementation
     ///
     /// The runtime page-size accessor lives in the platform stack:
-    /// - POSIX: `swift-iso-9945` (`ISO_9945.Kernel.System.pageSize`)
-    /// - Windows: `swift-windows-standard` (`Windows.Kernel.System.pageSize`)
-    /// - Cross-platform: `swift-kernel` (`Kernel.System.pageSize`)
+    /// - POSIX: `swift-iso-9945` (`ISO_9945.System.pageSize`)
+    /// - Windows: `swift-windows-standard` (`Windows.System.pageSize`)
+    /// - Cross-platform: `swift-kernel` (`System.pageSize`)
     public enum Page {}
 }
 
@@ -39,7 +39,7 @@ extension System.Page {
     /// ## Usage
     ///
     /// ```swift
-    /// let pageSize = Kernel.System.pageSize  // from swift-kernel (L3)
+    /// let pageSize = System.pageSize  // from swift-kernel (L3)
     /// let alignment = pageSize.alignment     // Memory.Alignment
     /// ```
     public typealias Size = Tagged<System.Page, Cardinal>

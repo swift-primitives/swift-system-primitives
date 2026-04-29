@@ -19,9 +19,9 @@ extension System {
     /// ## Platform Implementation
     ///
     /// The runtime processor-count accessor lives in the platform stack:
-    /// - POSIX: `swift-iso-9945` (`ISO_9945.Kernel.System.processorCount`)
-    /// - Windows: `swift-windows-standard` (`Windows.Kernel.System.processorCount`)
-    /// - Cross-platform: `swift-kernel` (`Kernel.System.Processor.count`)
+    /// - POSIX: `swift-iso-9945` (`ISO_9945.System.processorCount`)
+    /// - Windows: `swift-windows-standard` (`Windows.System.processorCount`)
+    /// - Cross-platform: `swift-kernel` (`System.Processor.count`)
     public enum Processor {}
 }
 
@@ -34,7 +34,7 @@ extension System.Processor {
     /// ## Usage
     ///
     /// ```swift
-    /// let cpuCount = Kernel.System.Processor.count  // from swift-kernel (L3)
+    /// let cpuCount = System.Processor.count  // from swift-kernel (L3)
     /// let threads = Kernel.Thread.Count(cpuCount)
     /// ```
     public typealias Count = Tagged<System.Processor, Cardinal>
