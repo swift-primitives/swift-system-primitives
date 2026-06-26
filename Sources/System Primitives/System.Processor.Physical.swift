@@ -9,5 +9,13 @@
 //
 // ===----------------------------------------------------------------------===//
 
-@_exported public import Cardinal_Primitives
-@_exported public import Ordinal_Primitives
+extension System.Processor {
+    /// Physical processor types (excludes hyperthreading / efficiency-performance split).
+    ///
+    /// ## Platform Implementation
+    ///
+    /// - Darwin: `sysctl("hw.physicalcpu")`
+    /// - Linux: Falls back to online processor count (POSIX)
+    /// - Windows: Falls back to total processor count
+    public enum Physical {}
+}

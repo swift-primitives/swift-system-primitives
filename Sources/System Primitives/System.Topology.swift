@@ -29,6 +29,7 @@ extension System {
         /// NUMA topology state.
         public let numa: NUMA.State
 
+        /// Creates a topology from a CPU count and NUMA state.
         public init(cpuCount: Int, numa: NUMA.State) {
             self.cpuCount = cpuCount
             self.numa = numa

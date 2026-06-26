@@ -37,6 +37,7 @@ extension System.Topology.NUMA {
         /// This allows uniform handling in sharding without special cases.
         public let isSynthetic: Bool
 
+        /// Creates a NUMA node from an identifier, its CPU set, and a synthetic flag.
         public init(id: Int, cpus: Set<Int>, isSynthetic: Bool = false) {
             self.id = id
             self.cpus = cpus
